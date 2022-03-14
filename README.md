@@ -13,6 +13,6 @@ $git add .
 
 $git commit -m "Initial commit"
 
-$git branch <BranchName>
+$git branch BranchName
   
-$git push origin <BranchName>
+$git push origin BranchName
