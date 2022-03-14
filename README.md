@@ -6,4 +6,13 @@
 각각의 브랜치는 다른 브랜치의 영향을 받지 않으며, 이는 여러 작업의 동시에 진행을 가능하게 한다.
 
 $git init
-$git remote add origin 
+
+$git remote add origin "https://github.com/ChoSeoyoung/Git_practice.git"
+
+$git add . 
+
+$git commit -m "Initial commit"
+
+$git branch <BranchName>
+  
+$git push origin <BranchName>
