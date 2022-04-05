@@ -60,26 +60,37 @@ testing 브랜치에 추가 작업을 한 후, commit을 한다.
 이후 다시 main 브랜치로 돌아오자. 주의할 점은, 브랜치를 전환하면 작업 디렉터리 내용도 함께 바뀐다.
 
 ## 병합
-testing 브랜치의 내용이 성공적이어서 testing 브랜치의 내용으로 main branch의 내용을 합치고 싶을 때, merge를 사용하면 된다.
-먼저, main branch로 이동한다.
+만약 testing 브랜치의 내용이 성공적이어서 testing 브랜치의 내용으로 main 브랜치를 통합하고 싶으면 어떻게 해야할까?
+먼저, main 브랜치로 이동한다.
 $git checkout main
 병합한다.
 $git merge testing
 
-## commit 취소, 예전 버전으로 돌아가기
-git log를 통해나오는 커밋ID를 이용한다.
+## commit 취소
+커밋 ID는 git log 명령어를 통해서 알 수 있다.
 $git reset --hard 커밋ID
 
 ## 고급기능
-특정 커밋을 참조하는 이름 붙이기
-$git tag
-마지막 커밋 수정하기
+### 특정 커밋을 참조하는 이름 붙이기
+$git tag tag_name: 가장 최근 커밋에 이름 붙이기
+$git tag tag_name commit_checksum: 특정 커밋에 이름 붙이기
+$git tag -a tag_name: 간단한 메세지를 입력할 수 있도록 편집기가 열림
+$git show tag: 누가 언제 어떤 메세지를 입력했는지 확인가능
+
+### 마지막 커밋 수정하기
 $git commit --amend
-공개된 커밋의 변경 내용을 되돌리기
+
+### 공개된 커밋의 변경 내역을 되돌리기
 $git revert
-이전 작업 결과를 저장한 상태로 되돌리기
+
+### 이전 작업 결과를 저장한 상태로 되돌리기
+git reverse 명령은 이전 커밋을 남겨 두지만 git reset명령은 이전 커밋을 남기지 않고 새로운 커밋을 남긴다.
 $git reset
-특정 파일을 최종 커밋 시점으로 되돌리기
+
+### 특정 파일을 최종 커밋 시점으로 되돌리기
 $git checkout HEAD -- filename
-브랜치 이력을 확인하면서 병합하기
+
+### 브랜치 이력을 확인하면서 병합하기
+git merge로 병합한다면 병합 이루 그래프가 복잡해질수도 있음
+git rebase 명령어를 이용하면 충돌을 해결하거나, 강제 병합, 또는 rebase 취소 옵션을 통해서 각각의 브랜치의 변경 내역을 master 브랜치에 순차적으로 적용하여 그래프의 모양을 단순하게 할 수 있음
 $git rebase
