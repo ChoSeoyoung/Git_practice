@@ -5,13 +5,12 @@ git의 기본적인 사용방법을 다룬다.
 ## 사용자 정보 등록, 기본적인 설정
 <pre><code>
 $git config --global user.name “홍길동”
-</code></pre>
-<pre><code>
 $git config --global user.email “hong@gil.dong”
-</code></pre>
-<pre><code>
 $git config --global color.ui true
 </code></pre>
+    --global: 현재 로그인한 계정에 전체 설정
+    --local: 현재 저장소 로컬 설정
+
 
 ## 지역 저장소 초기화
 우선 해당 디렉토리로 이동한다.
@@ -35,16 +34,19 @@ $git init
 
 
 ## 스테이지 영역에 추가
-현재 디렉토리의 모든 변경 내용을 스테이징 영역으로 넘기고 싶을 때
+<img width="440" alt="깃 add 예제" src="https://user-images.githubusercontent.com/74875490/164915186-e80dd01f-f948-4bbc-a4e6-5ac809fe719a.png">
+각각 현재 디렉토리의 모든 변경 내용을 스테이징 영역으로 넘기고 싶을 때, 특정파일(hello.html)을 넘기고 싶을 때이다.
 <pre><code>
 $git add . 
-</code></pre>
-특정 파일을 스테이징 영역으로 넘기고 싶을 때
-<pre><code>
 $git add hello.html
+</code></pre>
+add한 내용을 취소하고 싶다면
+<pre><code>
+$git reset하면 된다.
 </code></pre>
 
 ## commit(staging area->repository)
+<img width="288" alt="깃 commit 취소 예제" src="https://user-images.githubusercontent.com/74875490/164915610-703988e1-c475-434e-bd05-0e5b9a2ae8e7.png">
 <pre><code>
 $git commit -m 'add hello.html'
 </code></pre>
@@ -52,37 +54,53 @@ add와 커밋을 동시에
 <pre><code>
 $git commit -a -m 'add hello.html'
 </code></pre>
+commit한 내용을 취소 하고 싶다면 다음과 같이 커밋ID를 사용하거나 HEAD~i를 사용하면 된다.
+HEAD~i의 의미는 위에서 i번째를 삭제한다는 의미이다.
+<pre><code>
+$git reset --hard 커밋ID
+$git reset --hard HEAD~1
+</code></pre>
+
 
 ## 커밋 로그 확인
+다음과 같이 여러 옵션을 붙일수도 있다.
 <pre><code>
 $git log
+$git log --oneline --all --graph
+$git log --oneline -1
+</code></pre>
+commit 내용을 자세히 확인
+<pre><code>
+$git show
 </code></pre>
 
 ## Local repository->Remote repository
+main branch로 올린다.
 <pre><code>
 $git push -u origin main
 </code></pre>
 
+
+## Local repository<-Remote repository
+pull명령어와 fetch명령어가 있다. pull명령어는 fetch와 merge가 합쳐진 명령어라고 생각하면 이해가 쉽다.
+<pre><code>
+$git fetch 원격저장소 이름
+$git fetch origin
+$git pull
+</code></pre>
+
 ## 현재 브랜치 확인
+-v를 붙이면 조금 더 자세한 내용까지 볼 수 있다.
 <pre><code>
 $git branch
-</code></pre>
-옵션을 붙여 조건을 부여할 수도 있다. -v를 붙이면 조금 더 자세한 내용까지 볼 수 있다.
-<pre><code>
 $git branch -v
 </code></pre>
 
 ## 새 브랜치 만들기
-testing이라는 새 브랜치를 만들어보자. 하지만 다음 명령어 실행 후에도 HEADER는 현재 브랜치의 최종 commit을 가리킨다.
+testing이라는 새 브랜치를 만들어보자. 하지만 다음 명령어 실행 후에도 HEADER는 현재 브랜치의 최종 commit을 가리킨다. checkout 명령어를 통해서 testing branch로 HEADER를 옮길 수 있다. 또한 checkout -b 옵션을 통해서 branch를 만들고 현재 HEADER의 위치를 옮기는 것을 동시에 진행할 수도 있다.
 <pre><code>
 $git branch testing
-</code></pre>
-다음 명령어를 통해서 testing 브랜치로 HEADER를 옮길 수 있다.
-<pre><code>
 $git checkout testing
-</code></pre>
-git branch와 checkout을 동시에 진행할 수도 있다.
-<pre><code>
 $git checkout -b testing
 </code></pre>
 
@@ -93,19 +111,10 @@ testing 브랜치에 추가 작업을 한 후, commit을 한다.
 
 ## 병합
 만약 testing 브랜치의 내용이 성공적이어서 testing 브랜치의 내용으로 main 브랜치를 통합하고 싶으면 어떻게 해야할까?
-먼저, main 브랜치로 이동한다.
+먼저, main 브랜치로 이동한 후, git merge 가져오고자하는 브랜치이름으로 병합해야한다.
 <pre><code>
 $git checkout main
-</code></pre>
-병합한다.
-<pre><code>
 $git merge testing
-</code></pre>
-
-## commit 취소
-커밋 ID는 git log 명령어를 통해서 알 수 있다.
-<pre><code>
-$git reset --hard 커밋ID
 </code></pre>
 
 ## 고급기능
@@ -122,14 +131,13 @@ $git show tag: 누가 언제 어떤 메세지를 입력했는지 확인가능
 $git commit --amend
 </code></pre>
 
-### 공개된 커밋의 변경 내역을 되돌리기
+### reset과 revert
+<img width="597" alt="reset revert" src="https://user-images.githubusercontent.com/74875490/164915937-eabb3948-127b-41c3-bdb0-b1e9963a9ec4.png">
+<img width="292" alt="reset revert 예제" src="https://user-images.githubusercontent.com/74875490/164916118-dc1db963-864f-4cdd-b92e-8de021126620.png">
+공개된 커밋을 안전하게 변경하려면 git revert가 git reset에 비해 더 안전하다.
+git revert 명령은 이전 커밋을 남겨 두지만 git reset 명령은 이전 커밋을 남기지 않기 때문이다.
 <pre><code>
 $git revert
-</code></pre>
-
-### 이전 작업 결과를 저장한 상태로 되돌리기
-git revert 명령은 이전 커밋을 남겨 두지만 git reset명령은 이전 커밋을 남기지 않고 새로운 커밋을 남긴다.
-<pre><code>
 $git reset
 </code></pre>
 
@@ -139,8 +147,8 @@ $git checkout HEAD -- filename
 </code></pre>
 
 ### 브랜치 이력을 확인하면서 병합하기
-git merge로 병합한다면 병합 이루 그래프가 복잡해질수도 있음
-git rebase 명령어를 이용하면 충돌을 해결하거나, 강제 병합, 또는 rebase 취소 옵션을 통해서 각각의 브랜치의 변경 내역을 master 브랜치에 순차적으로 적용하여 그래프의 모양을 단순하게 할 수 있음
+git rebase 명령어는 새로운 base를 만드는 명령어이다. git merge를 통해서 그래프를 병렬적으로 병합한다면, git rebase를 통해서 선형으로 결합한다. 따라서 git merge에 비해 그래프 모양을 단순하게 관리할 수 있다.
+rebase는 Pull-Request 과정에서도 활용된다. 내가 PR하기 전에 다른 사람이 PR한 내용을 반영하기 위해서 프로젝트에서 fetch 한 후, rebase 명령어를 통해서 새로운 base를 만들 수 있다.
 <pre><code>
-$git rebase
+$git rebase 커밋ID
 </code></pre>
