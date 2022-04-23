@@ -119,6 +119,7 @@ $git merge testing
 
 ## 고급기능
 ### 특정 커밋을 참조하는 이름 붙이기
+<img width="454" alt="git tag" src="https://user-images.githubusercontent.com/74875490/164916431-73140268-d437-4388-b915-ace879f63b14.png">
 <pre><code>
 $git tag tag_name: 가장 최근 커밋에 이름 붙이기
 $git tag tag_name commit_checksum: 특정 커밋에 이름 붙이기
